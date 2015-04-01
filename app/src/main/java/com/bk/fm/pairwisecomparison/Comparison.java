@@ -49,7 +49,7 @@ public class Comparison extends ActionBarActivity {
 //--------------------------------------------------------------------
 
 	public void addButtonHandlers() {
-		itemOne.setOnClickListener(new View.OnClickListener() {
+		View.OnClickListener listener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(v == itemOne) {
@@ -73,7 +73,10 @@ public class Comparison extends ActionBarActivity {
 				setButtons();
 
 			}
-		});
+		};
+
+		itemOne.setOnClickListener(listener);
+		itemTwo.setOnClickListener(listener);
 
 	}
 
@@ -112,10 +115,9 @@ public class Comparison extends ActionBarActivity {
 
 	public void initializeComponents(Bundle savedInstanceState) {
 		items = (ArrayList<String>) getIntent().getSerializableExtra("ITEMS");
-		priorities =  new ArrayList<>();
+		priorities = new ArrayList<>(items);
 		placeOne = 0;
 		placeTwo = 1;
-		priorities.addAll(items);
 
 		progress = (ProgressBar) findViewById(R.id.progressBar);
 		itemOne = (Button) findViewById(R.id.itemOne);
@@ -127,6 +129,8 @@ public class Comparison extends ActionBarActivity {
 		progress.setMax(totalComparisons);
 		progress.setProgress(0);
 
-	}
+		setButtons();
+
+	}//End public void initializeComponents(Bundle)
 
 } //End Class

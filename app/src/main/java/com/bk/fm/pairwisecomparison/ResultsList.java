@@ -37,17 +37,14 @@ public class ResultsList extends ActionBarActivity {
 //
 //-------------------------------------------------------------
 
-
-//-------------------------------------------------------------
-//
-//		GUI Methods
-//
-//-------------------------------------------------------------
-
 	public void initializeComponents(Bundle savedInstanceState) {
 		itemList = (ListView) findViewById(R.id.itemList);
 
 		items = (ArrayList<String>) getIntent().getSerializableExtra("ITEMS");
+
+		for(int i = 0; i < items.size(); i++) {
+			items.set(i, (i + 1) + ".\t" + items.get(i));
+		}
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, items);
 		itemList.setAdapter(adapter);

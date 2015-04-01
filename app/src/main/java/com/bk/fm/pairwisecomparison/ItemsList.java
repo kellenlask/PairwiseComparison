@@ -74,6 +74,8 @@ public class ItemsList extends ActionBarActivity {
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, items);
 			itemList.setAdapter(adapter);
+
+			input.setText("");
 		}
 
 	}
