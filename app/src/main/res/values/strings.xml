@@ -9,5 +9,8 @@
     <string name="warning1">Must be at least 2 items.</string>
     <string name="whichIsBetter">Which is better?</string>
     <string name="or">OR</string>
+    <string name="title_activity_results_list">Results</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

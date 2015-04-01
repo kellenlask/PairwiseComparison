@@ -20,6 +20,10 @@
             android:name=".Comparison"
             android:label="@string/title_activity_comparison" >
         </activity>
+        <activity
+            android:name=".ResultsList"
+            android:label="@string/title_activity_results_list" >
+        </activity>
     </application>
 
 </manifest>
