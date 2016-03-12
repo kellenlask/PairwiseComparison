@@ -1,6 +1,8 @@
 package com.bk.fm.pairwisecomparison;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -36,7 +38,10 @@ public class Comparison extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_comparison);
 
-		initializeComponents(savedInstanceState);
+		// Set ActionBar Color
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0d5c92")));
+
+		initializeComponents();
 
 		addButtonHandlers();
 
@@ -113,7 +118,7 @@ public class Comparison extends ActionBarActivity {
 		startActivity(i);
 	}
 
-	public void initializeComponents(Bundle savedInstanceState) {
+	public void initializeComponents() {
 		items = (ArrayList<String>) getIntent().getSerializableExtra("ITEMS");
 		priorities = new ArrayList<>(items);
 		placeOne = 0;
@@ -126,7 +131,7 @@ public class Comparison extends ActionBarActivity {
 		int n = items.size();
 		totalComparisons = n * (n - 1) / 2;
 
-		progress.setMax(totalComparisons);
+		progress.setMax(totalComparisons + 1);
 		progress.setProgress(0);
 
 		setButtons();

@@ -1,6 +1,8 @@
 package com.bk.fm.pairwisecomparison;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -36,10 +38,13 @@ public class ItemsList extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_items_list);
 
+		// Set ActionBar Color
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0d5c92")));
+
 		initializeComponents();
 		addButtonHandlers();
-
 	}
+
 
 //--------------------------------------------------------------------
 //
@@ -72,7 +77,7 @@ public class ItemsList extends ActionBarActivity {
 		if(!items.contains(s)) {
 			items.add(s);
 
-			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, items);
+			ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
 			itemList.setAdapter(adapter);
 
 			input.setText("");

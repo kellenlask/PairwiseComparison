@@ -20,17 +20,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/comparisons"
-            android:id="@+id/textView"
-            android:layout_column="0"
-            android:layout_gravity="left"
-            android:layout_row="0"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/whichIsBetter"
             android:id="@+id/textView2"
@@ -39,7 +28,9 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:textStyle="bold"
-            android:layout_columnSpan="2"/>
+            android:layout_columnSpan="2"
+            android:textIsSelectable="false"
+            android:textSize="30sp"/>
 
         <Space
             android:layout_width="13dp"
@@ -57,7 +48,10 @@
             android:layout_column="0"
             android:layout_gravity="fill_horizontal|left"
             android:layout_columnWeight="1"
-            android:layout_columnSpan="2"/>
+            android:layout_columnSpan="2"
+            android:textSize="20sp"
+            android:background="#0b2d47"
+            android:textColor="#FFFFFF"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,7 +65,8 @@
             android:textAlignment="center"
             android:gravity="center_vertical|center"
             android:layout_gravity="center_horizontal"
-            android:layout_columnSpan="2"/>
+            android:layout_columnSpan="2"
+            android:textSize="25sp"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -82,7 +77,10 @@
             android:layout_column="0"
             android:layout_gravity="fill_horizontal|right"
             android:layout_columnWeight="1"
-            android:layout_columnSpan="2"/>
+            android:layout_columnSpan="2"
+            android:textSize="20sp"
+            android:background="#0b2d47"
+            android:textColor="#FFFFFF"/>
 
         <ProgressBar
             style="?android:attr/progressBarStyleHorizontal"
@@ -92,7 +90,8 @@
             android:layout_row="1"
             android:layout_column="0"
             android:layout_columnSpan="2"
-            android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"
+            android:progressTint="#13537e"/>
 
     </GridLayout>
 </RelativeLayout>

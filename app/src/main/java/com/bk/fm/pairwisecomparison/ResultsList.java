@@ -1,5 +1,8 @@
 package com.bk.fm.pairwisecomparison;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.ArrayAdapter;
@@ -27,8 +30,18 @@ public class ResultsList extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_results_list);
 
-		initializeComponents(savedInstanceState);
+		// Set ActionBar Color
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0d5c92")));
 
+		initializeComponents();
+
+	}
+
+	@Override
+	public void onBackPressed() {
+		Intent i = new Intent(getBaseContext(), ItemsList.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivity(i);
 	}
 
 //-------------------------------------------------------------
@@ -37,7 +50,7 @@ public class ResultsList extends ActionBarActivity {
 //
 //-------------------------------------------------------------
 
-	public void initializeComponents(Bundle savedInstanceState) {
+	public void initializeComponents() {
 		itemList = (ListView) findViewById(R.id.itemList);
 
 		items = (ArrayList<String>) getIntent().getSerializableExtra("ITEMS");
@@ -46,7 +59,7 @@ public class ResultsList extends ActionBarActivity {
 			items.set(i, (i + 1) + ".\t" + items.get(i));
 		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getBaseContext(), android.R.layout.simple_list_item_1, items);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
 		itemList.setAdapter(adapter);
 	}
 
