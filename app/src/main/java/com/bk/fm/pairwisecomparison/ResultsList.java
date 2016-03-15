@@ -4,14 +4,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 
-public class ResultsList extends ActionBarActivity {
+public class ResultsList extends AppCompatActivity {
 //-------------------------------------------------------------
 //
 //		Fields
@@ -40,6 +40,7 @@ public class ResultsList extends ActionBarActivity {
 	@Override
 	public void onBackPressed() {
 		Intent i = new Intent(getBaseContext(), ItemsList.class);
+		i.putExtra("ITEMS",  items);
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(i);
 	}

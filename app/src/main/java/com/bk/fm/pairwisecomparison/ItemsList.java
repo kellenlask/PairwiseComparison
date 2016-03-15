@@ -3,9 +3,15 @@ package com.bk.fm.pairwisecomparison;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -15,21 +21,27 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 
-public class ItemsList extends ActionBarActivity {
+public class ItemsList extends AppCompatActivity {
 //--------------------------------------------------------------------
 //
 //		Fields
 //
 //--------------------------------------------------------------------
+	SensorManager sensorManager;
+	Sensor accelerometer;
+	ShakeDetector shakeDetector;
+
 	private ArrayList<String> items;
 	private ListView itemList;
 	private Button addButton;
 	private TextView input;
 	private Button next;
+	Animation fade;
+
 
 //--------------------------------------------------------------------
 //
-//		onCreate
+//		Life Cycle Methods
 //
 //--------------------------------------------------------------------
 
@@ -38,23 +50,58 @@ public class ItemsList extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_items_list);
 
-		// Set ActionBar Color
-		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0d5c92")));
-
 		initializeComponents();
-		addButtonHandlers();
+		addActionHandlers();
 	}
 
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		// Register the Session Manager Listener onResume
+		sensorManager.registerListener(shakeDetector, accelerometer, SensorManager.SENSOR_DELAY_UI);
+	}
+
+
+	@Override
+	public void onPause() {
+		// Unregister the Sensor Manager onPause
+		sensorManager.unregisterListener(shakeDetector);
+		super.onPause();
+	}
 
 //--------------------------------------------------------------------
 //
 //		Logical Methods
 //
 //--------------------------------------------------------------------
-	public void addButtonHandlers(){
+
+	public void addActionHandlers() {
+		//Shake Detection
+		shakeDetector.setOnShakeListener(new ShakeDetector.OnShakeListener() {
+
+			@Override
+			public void onShake(int count) {
+				View root = findViewById(android.R.id.content);
+				Snackbar snackbar = Snackbar.make(root, getString(R.string.clear_list_text), Snackbar.LENGTH_LONG)
+						.setAction("CLEAR", new View.OnClickListener() {
+							@Override
+							public void onClick(View view) {
+								items.clear();
+								ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
+								itemList.setAdapter(adapter);
+						}
+					}
+				);
+
+				snackbar.show();
+			}
+		});
+
 		addButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				addButton.startAnimation(fade);
 				updateList(input.getText().toString());
 			}
 		});
@@ -62,19 +109,35 @@ public class ItemsList extends ActionBarActivity {
 		next.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				next.startAnimation(fade);
 				if (items.size() >= 2) {
 					Intent i = new Intent(getBaseContext(), Comparison.class);
-					i.putExtra("ITEMS",  items);
+					i.putExtra("ITEMS", items);
 					startActivity(i);
 				} else {
 					Toast.makeText(getApplicationContext(), getString(R.string.warning1), Toast.LENGTH_SHORT).show();
 				}
 			}
 		});
+
+		itemList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				// Remove the item long-clicked from the list
+				items.remove(position);
+
+				ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
+				itemList.setAdapter(adapter);
+
+				// Return that the event was handled
+				return true;
+			}
+		});
+
 	}
 
 	public void updateList(String s) {
-		if(!items.contains(s)) {
+		if (!items.contains(s)) {
 			items.add(s);
 
 			ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
@@ -91,12 +154,30 @@ public class ItemsList extends ActionBarActivity {
 //
 //--------------------------------------------------------------------
 	public void initializeComponents() {
-		items = new ArrayList<>();
+		//Shake Detection
+		sensorManager = (SensorManager) getBaseContext().getSystemService(getBaseContext().SENSOR_SERVICE);
+		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		shakeDetector = new ShakeDetector();
+
+		// Set ActionBar Color
+		getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#0d5c92")));
+
+		fade = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_in);
+
 		itemList = (ListView) findViewById(R.id.itemList);
 		addButton = (Button) findViewById(R.id.addButton);
 		input = (TextView) findViewById(R.id.inputField);
 		next = (Button) findViewById(R.id.nextButton);
+
+		// Intent with items will exist in cases where the user went back from the results page
+		items = (ArrayList<String>) getIntent().getSerializableExtra("ITEMS");
+
+		if (items == null) {
+			items = new ArrayList<>();
+
+		} else {
+			ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
+			itemList.setAdapter(adapter);
+		}
 	}
-
-
 } //End Class
