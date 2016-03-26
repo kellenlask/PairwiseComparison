@@ -8,6 +8,7 @@ Features:
   - Remove elements on long-press
   - Clear list on shake (offers snack bar with clear option) 
   - Walks you through item pairings
+  - Shows comparison progress with a progress bar along the top
   - Generates sorted list of elements
   
 See in action: 
