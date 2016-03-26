@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,16 +26,18 @@ public class ItemsList extends AppCompatActivity {
 //		Fields
 //
 //--------------------------------------------------------------------
-	SensorManager sensorManager;
-	Sensor accelerometer;
-	ShakeDetector shakeDetector;
+	private SensorManager sensorManager;
+	private Sensor accelerometer;
+	private ShakeDetector shakeDetector;
+
+	private NumberedListAdapter adapter;
 
 	private ArrayList<String> items;
 	private ListView itemList;
 	private Button addButton;
 	private TextView input;
 	private Button next;
-	Animation fade;
+	private Animation fade;
 
 
 //--------------------------------------------------------------------
@@ -88,8 +89,7 @@ public class ItemsList extends AppCompatActivity {
 							@Override
 							public void onClick(View view) {
 								items.clear();
-								ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
-								itemList.setAdapter(adapter);
+								updateList();
 						}
 					}
 				);
@@ -126,8 +126,7 @@ public class ItemsList extends AppCompatActivity {
 				// Remove the item long-clicked from the list
 				items.remove(position);
 
-				ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
-				itemList.setAdapter(adapter);
+				updateList();
 
 				// Return that the event was handled
 				return true;
@@ -136,12 +135,25 @@ public class ItemsList extends AppCompatActivity {
 
 	}
 
+
+	// Tell the adapter that its data has changed
+	public void updateList() {
+		if(adapter == null) {
+			adapter = new NumberedListAdapter(getBaseContext(), items);
+			itemList.setAdapter(adapter);
+
+		} else {
+			adapter.reloadData();
+		}
+	}
+
+
+	// Add an element to the ListView
 	public void updateList(String s) {
 		if (!items.contains(s)) {
 			items.add(s);
 
-			ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
-			itemList.setAdapter(adapter);
+			updateList();
 
 			input.setText("");
 		}
@@ -175,9 +187,10 @@ public class ItemsList extends AppCompatActivity {
 		if (items == null) {
 			items = new ArrayList<>();
 
-		} else {
-			ArrayAdapter<String> adapter = new ArrayAdapter<>(getBaseContext(), android.R.layout.simple_list_item_1, items);
-			itemList.setAdapter(adapter);
 		}
+
+		// Create the ListView's adapter
+		updateList();
+
 	}
 } //End Class

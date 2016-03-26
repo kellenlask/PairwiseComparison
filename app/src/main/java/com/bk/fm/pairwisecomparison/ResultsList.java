@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -18,6 +17,7 @@ public class ResultsList extends AppCompatActivity {
 //
 //-------------------------------------------------------------
 	private ArrayList<String> items;
+	private NumberedListAdapter adapter;
 	private ListView itemList;
 
 //-------------------------------------------------------------
@@ -51,17 +51,24 @@ public class ResultsList extends AppCompatActivity {
 //
 //-------------------------------------------------------------
 
+	// Tell the adapter that its data has changed
+	public void updateList() {
+		if(adapter == null) {
+			adapter = new NumberedListAdapter(getBaseContext(), items);
+			itemList.setAdapter(adapter);
+
+		} else {
+			adapter.reloadData();
+		}
+	}
+
+
 	public void initializeComponents() {
 		itemList = (ListView) findViewById(R.id.itemList);
 
 		items = (ArrayList<String>) getIntent().getSerializableExtra("ITEMS");
 
-		for(int i = 0; i < items.size(); i++) {
-			items.set(i, (i + 1) + ".\t" + items.get(i));
-		}
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
-		itemList.setAdapter(adapter);
+		updateList();
 	}
 
 } //End Class
