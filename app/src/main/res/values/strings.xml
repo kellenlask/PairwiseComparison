@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PairwiseComparison</string>
+    <string name="app_name">Pairwise</string>
 
     <string name="title_activity_input">Input Items</string>
     <string name="title_activity_comparison">Compare Items</string>
